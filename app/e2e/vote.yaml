@@ -1,0 +1,66 @@
+# Fluxo E2E (US2 + US3): localização negada → cidade manual → palpites → resultados.
+# Rode após sign-up.yaml (sessão ativa). Negue a permissão de localização no diálogo do Android.
+appId: host.exp.exponent
+---
+- runFlow: sign-up.yaml
+- tapOn:
+    id: use-location-button
+- tapOn:
+    text: '(?i)não permitir|don.t allow|deny'
+    optional: true
+- extendedWaitUntil:
+    visible:
+      id: manual-picker
+    timeout: 20000
+- tapOn:
+    id: uf-SP
+- tapOn:
+    id: city-filter
+- inputText: Campinas
+- tapOn:
+    id: city-3509502
+- extendedWaitUntil:
+    visible:
+      id: vote-screen
+    timeout: 20000
+- swipe:
+    from:
+      id: question-noite-slider
+    direction: RIGHT
+- runFlow:
+    when:
+      visible:
+        id: question-tarde-slider
+    commands:
+      - swipe:
+          from:
+            id: question-tarde-slider
+          direction: RIGHT
+- runFlow:
+    when:
+      visible:
+        id: question-manha-slider
+    commands:
+      - swipe:
+          from:
+            id: question-manha-slider
+          direction: RIGHT
+- runFlow:
+    when:
+      visible:
+        id: question-madrugada-slider
+    commands:
+      - swipe:
+          from:
+            id: question-madrugada-slider
+          direction: RIGHT
+- tapOn:
+    id: confirm-votes-button
+- extendedWaitUntil:
+    visible:
+      id: results-screen
+    timeout: 20000
+- assertVisible:
+    id: bars-noite
+- assertVisible:
+    id: forecast-noite

@@ -1,0 +1,40 @@
+# Fluxo E2E (US1): cadastro sem senha → código → app.
+# Pré-requisitos: `npm run emulators` rodando e o app aberto no Expo Go com EXPO_PUBLIC_USE_EMULATORS=true.
+# O código é lido do Firestore Emulator (coleção `mail`) pelo script auxiliar.
+appId: host.exp.exponent
+env:
+  EXPO_URL: exp://10.0.2.2:8081
+  EMAIL: e2e-${maestro.timestamp}@example.com
+---
+- openLink: ${EXPO_URL}
+- extendedWaitUntil:
+    visible:
+      id: sign-in-screen
+    timeout: 60000
+- tapOn:
+    id: go-sign-up
+- tapOn:
+    id: name-input
+- inputText: Ana E2E
+- tapOn:
+    id: email-input
+- inputText: ${EMAIL}
+- tapOn:
+    id: sign-up-button
+- extendedWaitUntil:
+    visible:
+      id: verify-code-screen
+    timeout: 20000
+- runScript:
+    file: scripts/read-login-code.js
+    env:
+      EMAIL: ${EMAIL}
+- tapOn:
+    id: code-input
+- inputText: ${output.code}
+- tapOn:
+    id: verify-button
+- extendedWaitUntil:
+    visible:
+      id: location-screen
+    timeout: 20000

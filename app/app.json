@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Vai chover?",
+    "slug": "vai-chover",
+    "scheme": "vaichover",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "br.com.vaichover.app"
+    },
+    "android": {
+      "package": "br.com.vaichover.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "O Vai chover? usa sua localização para descobrir sua cidade e o horário local. A localização exata não é guardada."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

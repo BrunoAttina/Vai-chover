@@ -38,10 +38,20 @@ const UFS = [
   'TO',
 ];
 
+/** Busca sem diferenciar acentos e maiúsculas ("sao" encontra "São Paulo"). */
+function normalizeSearch(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .trim();
+}
+
 const MANUAL_MESSAGES = {
   denied: 'Sem acesso à localização. Escolha sua cidade na lista.',
   unavailable: 'Não conseguimos obter sua localização. Escolha sua cidade na lista.',
   notFound: 'Não identificamos sua cidade. Escolha-a na lista.',
+  outsideBrazil: 'Sua localização parece estar fora do Brasil. Escolha sua cidade na lista.',
 } as const;
 
 /** Tela de localização (contracts/ui-screens.md `/location`). */
@@ -110,7 +120,7 @@ function ManualCityPicker({
   }, [uf]);
 
   const visible = cities.filter((city) =>
-    city.name.toLocaleLowerCase('pt-BR').includes(filter.toLocaleLowerCase('pt-BR')),
+    normalizeSearch(city.name).includes(normalizeSearch(filter)),
   );
 
   return (

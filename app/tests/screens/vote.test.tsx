@@ -66,6 +66,7 @@ describe('LocationScreen', () => {
       items: [
         { ibgeCode: '1400050', name: 'Alto Alegre' },
         { ibgeCode: '1400100', name: 'Boa Vista' },
+        { ibgeCode: '1400506', name: 'São João da Baliza' },
       ],
     });
     mockApi.resolveRegion.mockResolvedValue(regionAt('tarde'));
@@ -79,6 +80,11 @@ describe('LocationScreen', () => {
     expect(await screen.findByTestId('city-1400100')).toBeTruthy();
     await fireEvent.changeText(screen.getByTestId('city-filter'), 'boa');
     expect(screen.queryByTestId('city-1400050')).toBeNull();
+
+    await fireEvent.changeText(screen.getByTestId('city-filter'), 'SAO JOAO');
+    expect(screen.getByTestId('city-1400506')).toBeTruthy();
+    expect(screen.queryByTestId('city-1400100')).toBeNull();
+    await fireEvent.changeText(screen.getByTestId('city-filter'), 'boa');
 
     await fireEvent.press(screen.getByTestId('city-1400100'));
     expect(mockApi.listMunicipalities).toHaveBeenCalledWith({ state: 'RR' });

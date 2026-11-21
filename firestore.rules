@@ -1,0 +1,62 @@
+rules_version = '2';
+
+// contracts/firestore-rules.md — deny by default. O cliente só lê; toda escrita de dado de
+// negócio passa pelas Cloud Functions (Admin SDK).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Sessão autenticada e com no máximo 60 dias desde o login (FR-007).
+    function validSession() {
+      return request.auth != null
+        && request.auth.token.auth_time is int
+        && request.time < timestamp.value(request.auth.token.auth_time * 1000) + duration.value(60, 'd');
+    }
+
+    function isOwner(uid) {
+      return validSession() && request.auth.uid == uid;
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow write: if false;
+    }
+
+    match /loginCodes/{id} {
+      allow read, write: if false;
+    }
+
+    match /mail/{id} {
+      allow read, write: if false;
+    }
+
+    match /regions/{regionId} {
+      allow read: if validSession();
+      allow write: if false;
+    }
+
+    match /votes/{voteId} {
+      allow read: if validSession() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    // Apenas números agregados (FR-027).
+    match /tallies/{tallyId} {
+      allow read: if validSession();
+      allow write: if false;
+    }
+
+    match /forecasts/{forecastId} {
+      allow read: if validSession();
+      allow write: if false;
+    }
+
+    match /periodAnalyses/{analysisId} {
+      allow read: if validSession();
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

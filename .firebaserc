@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "vai-chover-c102e",
+    "prod": "vai-chover-c102e",
+    "emulator": "demo-vai-chover"
+  }
+}

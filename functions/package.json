@@ -1,0 +1,37 @@
+{
+  "name": "@vai-chover/functions",
+  "version": "1.0.0",
+  "private": true,
+  "main": "lib/index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "jest --selectProjects unit contract",
+    "test:integration": "jest --selectProjects unit contract integration --coverage --runInBand",
+    "test:rules": "jest --selectProjects rules --runInBand",
+    "test:live": "OPEN_METEO_LIVE=true jest --selectProjects contract",
+    "build:municipios": "node scripts/build-municipios.mts"
+  },
+  "dependencies": {
+    "date-fns-tz": "^3.2.0",
+    "firebase-admin": "^14.5.1",
+    "firebase-functions": "^7.4.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "@types/jest": "^30.0.0",
+    "@vai-chover/shared": "1.0.0",
+    "esbuild": "^0.25.0",
+    "firebase": "^13.4.0",
+    "jest": "^30.2.0",
+    "nock": "^14.0.0",
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
+    "@babel/preset-typescript": "^7.28.0",
+    "babel-jest": "^30.2.0"
+  }
+}

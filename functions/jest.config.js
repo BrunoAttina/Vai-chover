@@ -17,6 +17,8 @@ module.exports = {
       displayName: 'integration',
       roots: ['<rootDir>/tests/integration'],
       setupFiles: ['<rootDir>/tests/integration/setup-env.ts'],
+      // Chamadas aos emuladores podem passar de 5 s em máquinas mais lentas.
+      testTimeout: 20000,
     },
     { ...base, displayName: 'rules', roots: ['<rootDir>/tests/rules'] },
   ],

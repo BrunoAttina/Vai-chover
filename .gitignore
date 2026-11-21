@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+
+# builds
+dist/
+build/
+functions/lib/
+.expo/
+web-build/
+android/
+ios/
+
+# tests
+coverage/
+
+# env & secrets
+.env
+.env*.local
+*.pem
+*.p12
+*.jks
+*.keystore
+service-account*.json
+functions/.secret.local
+
+# firebase
+.firebase/
+firebase-debug*.log
+firestore-debug*.log
+ui-debug*.log
+seed/*
+!seed/README.md
+
+# logs & os
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+functions/.env*

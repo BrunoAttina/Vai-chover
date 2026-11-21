@@ -1,0 +1,38 @@
+{
+  "name": "vai-chover",
+  "private": true,
+  "workspaces": [
+    "app",
+    "functions",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-vai-chover \"npm run test:rules -w functions\"",
+    "test:integration": "firebase emulators:exec --only auth,firestore --project demo-vai-chover \"npm run test:integration -w functions\"",
+    "test:e2e": "maestro test app/e2e",
+    "emulators": "npm run build -w functions && firebase emulators:start --project demo-vai-chover --import ./seed --export-on-exit ./seed",
+    "app": "npm run start -w app"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "eslint-config-prettier": "^10.1.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "firebase-tools": "^15.37.0",
+    "globals": "^16.5.0",
+    "prettier": "^3.6.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.50.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "^1.13.6"
+  }
+}

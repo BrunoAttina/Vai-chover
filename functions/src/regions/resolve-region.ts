@@ -36,6 +36,7 @@ export async function resolveRegion(
     if (!isInsideBrazil(input.latitude, input.longitude)) {
       throw new HttpsError('invalid-argument', 'Location outside Brazil.', {
         fields: ['latitude'],
+        reason: 'outside_brazil',
       });
     }
     municipality = findMunicipality(municipalities, input);

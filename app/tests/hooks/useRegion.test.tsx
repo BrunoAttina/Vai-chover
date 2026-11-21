@@ -71,6 +71,24 @@ describe('useRegion', () => {
     expect(result.current.manualReason).toBe('notFound');
   });
 
+  it('falls back to manual with a clear reason when the location is outside Brazil', async () => {
+    const api = {
+      resolveRegion: jest
+        .fn()
+        .mockRejectedValue(new ApiError('invalid-argument', { reason: 'outside_brazil' })),
+    };
+    const locate = jest
+      .fn()
+      .mockResolvedValue({ status: 'granted', latitude: 37.42, longitude: -122.08 });
+    const { result } = await renderHook(() => useRegion({ api, locate }));
+    await act(async () => {
+      await result.current.locate();
+    });
+    expect(result.current.status).toBe('manual');
+    expect(result.current.manualReason).toBe('outsideBrazil');
+    expect(result.current.error).toBeNull();
+  });
+
   it('shows an error on other failures', async () => {
     const api = { resolveRegion: jest.fn().mockRejectedValue(new ApiError('unavailable', null)) };
     const locate = jest

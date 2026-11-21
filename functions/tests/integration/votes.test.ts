@@ -62,7 +62,7 @@ describe('resolveRegion', () => {
   it('rejects coordinates outside Brazil', async () => {
     await expect(
       resolveRegion(deps, authFor('u1', clock), { source: 'gps', latitude: 40.7, longitude: -74 }),
-    ).rejects.toMatchObject({ code: 'invalid-argument' });
+    ).rejects.toMatchObject({ code: 'invalid-argument', details: { reason: 'outside_brazil' } });
   });
 
   it('lists municipalities of a state', async () => {

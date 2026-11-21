@@ -16,7 +16,7 @@ export interface UseRegion {
   region: ResolveRegionOutput | null;
   error: string | null;
   /** Motivo de cair na escolha manual: permissão negada ou município não identificado. */
-  manualReason: 'denied' | 'notFound' | 'unavailable' | null;
+  manualReason: 'denied' | 'notFound' | 'unavailable' | 'outsideBrazil' | null;
   locate: () => Promise<ResolveRegionOutput | null>;
   chooseManual: (ibgeCode: string) => Promise<ResolveRegionOutput | null>;
 }
@@ -39,6 +39,9 @@ export function useRegion({ api, locate = getCurrentLocation }: Dependencies = {
       } catch (caught) {
         if (caught instanceof ApiError && caught.code === 'not-found') {
           setManualReason('notFound');
+          setStatus('manual');
+        } else if (caught instanceof ApiError && caught.reason === 'outside_brazil') {
+          setManualReason('outsideBrazil');
           setStatus('manual');
         } else {
           setError(toUserMessage(caught));
